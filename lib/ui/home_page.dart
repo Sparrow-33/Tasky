@@ -1,6 +1,10 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:first_mobile/services/notification_service.dart';
 import 'package:first_mobile/services/theme_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,6 +14,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var notifyHelper;
+  @override
+  void initState() {
+    super.initState();
+    // notifyHelper = NotificationService();
+    // notifyHelper.initializeNotification();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +34,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Text(
-            "KOALA",
+            "JB",
             style: TextStyle(fontSize: 30),
           )
         ],
@@ -30,6 +47,7 @@ class _HomePageState extends State<HomePage> {
       leading: GestureDetector(
         onTap: () {
           ThemeService().switchTheme();
+          NotificationService().displayNotification();
         },
         child: Icon(
           Icons.nightlight_round,

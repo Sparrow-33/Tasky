@@ -1,10 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.first_mobile">
+          xmlns:tools="http://schemas.android.com/tools" package="com.example.first_mobile">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
    <application
         android:label="first_mobile"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <activity
+       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+                 android:exported="true" tools:ignore="MissingClass">
+       </receiver>
+       <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
