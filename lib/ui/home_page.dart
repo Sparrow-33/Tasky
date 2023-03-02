@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:first_mobile/services/notification_service.dart';
 import 'package:first_mobile/services/theme_service.dart';
+import 'package:first_mobile/ui/addTaskBar.dart';
 import 'package:first_mobile/ui/theme.dart';
 import 'package:first_mobile/ui/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _addTaskBar(),
-                  MyButton(label: "+ Add Task", onTap: () => null),
+                  MyButton(label: "+ Add Task", onTap: () => Get.to(AddTaskBar())),
                 ],
               )),
 
@@ -113,6 +114,7 @@ class _HomePageState extends State<HomePage> {
    _appBar() {
     return AppBar(
       elevation: 0,
+      // backgroundColor: context.theme.backgroundColor,
       leading: GestureDetector(
         onTap: () {
           ThemeService().switchTheme();
@@ -122,7 +124,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(
           Get.isDarkMode ? Icons.wb_sunny_outlined : Icons.nightlight_round,
           size: 20,
-          color: Get.isDarkMode ? Colors.black : Colors.white,
+          color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
       actions: [

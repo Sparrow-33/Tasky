@@ -21,7 +21,8 @@ class Themes {
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: Colors.white,
     brightness: Brightness.light),
-    brightness: Brightness.light );
+    brightness: Brightness.light
+  );
 
   static final dark =  ThemeData(
 colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -36,7 +37,8 @@ TextStyle get subHeadingStyle {
     textStyle: TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.bold,
-      color: Get.isDarkMode? Colors.grey[400]:Colors.grey
+      color: Get.isDarkMode? Colors.grey[500]:Colors.grey,
+        decorationThickness: 0
     )
   );
 }
@@ -47,5 +49,29 @@ TextStyle get headingStyle {
       fontSize: 26,
       fontWeight: FontWeight.bold,
     )
+  );
+}
+
+TextStyle get titleStyle {
+  return GoogleFonts.lato (
+      textStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Get.isDarkMode? Colors.white:Colors.black,
+          decorationThickness: 0
+
+      )
+  );
+}
+
+TextStyle get subtitleStyle {
+  return GoogleFonts.lato (
+      textStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Get.isDarkMode? Colors.grey[100]:Colors.grey[700],
+          decoration: TextDecoration.none,
+          decorationThickness: 0
+      )
   );
 }
