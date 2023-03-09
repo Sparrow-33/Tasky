@@ -24,4 +24,8 @@ class TaskController extends GetxController {
     List<Map<String, dynamic>> tasks = await DataBaseHelper.query();
     taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
   }
+
+  void deleteTask(Task task) {
+
+  }
 }

@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:first_mobile/controllers/task_controller.dart';
+import 'package:first_mobile/models/task.dart';
 import 'package:first_mobile/services/notification_service.dart';
 import 'package:first_mobile/services/theme_service.dart';
 import 'package:first_mobile/ui/addTaskBar.dart';
@@ -184,12 +185,17 @@ class _HomePageState extends State<HomePage> {
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (_, index) {
               final task = snapshot.data?.docs[index].data() as Map<String, dynamic>;
-              return Container(
-                width: 100,
-                height: 50,
-                color: Colors.cyan,
-                margin: const EdgeInsets.only(bottom: 10),
-                child: Text(task!['title']),
+              return GestureDetector(
+                 onTap: () {
+                   _taskController.deleteTask(task as Task);
+                 },
+                 child: Container(
+                  width: 100,
+                  height: 50,
+                  color: Colors.cyan,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(task!['title']),
+                 )
               );
             },
           );
@@ -197,4 +203,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+
 }
