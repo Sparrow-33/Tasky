@@ -1,5 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:first_mobile/controllers/task_controller.dart';
 import 'package:first_mobile/services/notification_service.dart';
 import 'package:first_mobile/services/theme_service.dart';
 import 'package:first_mobile/ui/addTaskBar.dart';
@@ -11,6 +13,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
+
+import '../conf/db.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,6 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.now();
+  final _taskController = Get.put(TaskController());
   var notifyHelper;
   @override
   void initState() {
@@ -44,12 +50,18 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _addTaskBar(),
-                  MyButton(label: "+ Add Task", onTap: () => Get.to(AddTaskBar())),
+                  MyButton(label: "+ Add Task",
+                      onTap: () async {
+                      await Get.to(AddTaskBar());
+                      _taskController.getTasks();
+                      }
+                  ),
                 ],
               )),
 
          _addDateBar(),
-         
+         SizedBox(height: 20,),
+         _showTasks(),
         ],
       ),
     );
@@ -136,6 +148,53 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(width: 20)
       ],
+    );
+  }
+
+  // _showTasks() {
+  //    return Expanded(
+  //        child:Obx(() {
+  //          return ListView.builder(
+  //              itemCount:_taskController.taskList.length,
+  //
+  //              itemBuilder: (_, context){
+  //                print("HELLO LENGTH ${_taskController.taskList.length}");
+  //             return Container(
+  //               width: 100,
+  //               height:50 ,
+  //               color: Colors.cyan,
+  //               margin: const EdgeInsets.only(bottom: 10),
+  //             );
+  //          });
+  //        }),
+  //    );
+  // }
+  _showTasks() {
+    return Expanded(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('task').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          if (!snapshot.hasData) {
+            return Text('Loading...');
+          }
+          return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (_, index) {
+              final task = snapshot.data?.docs[index].data() as Map<String, dynamic>;
+              return Container(
+                width: 100,
+                height: 50,
+                color: Colors.cyan,
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Text(task!['title']),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 
 
+import 'package:first_mobile/controllers/task_controller.dart';
+import 'package:first_mobile/models/task.dart';
 import 'package:first_mobile/ui/theme.dart';
 import 'package:first_mobile/ui/widgets/button.dart';
 import 'package:first_mobile/ui/widgets/input.dart';
@@ -10,6 +12,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
+import '../conf/db.dart';
+
 class AddTaskBar extends StatefulWidget {
   const AddTaskBar({Key? key}) : super(key: key);
 
@@ -19,6 +23,7 @@ class AddTaskBar extends StatefulWidget {
 
 class _AddTaskBarState extends State<AddTaskBar> {
 
+  final TaskController _taskController = Get.put(TaskController());
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
@@ -56,7 +61,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
              InputFiled(
                  title: "Note",
                  hint: "Enter your note",
-                 controller: _titleController,),
+                 controller: _noteController,),
              InputFiled(title: "Date",
                         hint: DateFormat.yMd().format(_selectedDate),
                         widget: IconButton(
@@ -157,7 +162,13 @@ class _AddTaskBarState extends State<AddTaskBar> {
                children: [
                _colorChoice(),
                MyButton(label: "Create Task",
-                 onTap: ()=> _validateDate(),)
+                 onTap: ()  {
+                   // await DataBaseHelper.tableDelete();
+                   // print("TASK CREATE");
+                   _validateDate();
+
+                 },
+               )
            ],
 
              )
@@ -277,6 +288,19 @@ class _AddTaskBarState extends State<AddTaskBar> {
   _validateDate() {
      if(_titleController.text.isNotEmpty) {
      //   DB process
+       _taskController.addTask(
+           task :Task(
+             note: _noteController.text,
+             title: _titleController.text,
+             date:DateFormat.yMd().format(_selectedDate),
+             startTime: _startTime,
+             endTime: _endTime,
+             remind: _selectedRemind,
+             repeat: _selectedRepeat,
+             color: _selectedColor,
+             isCompleted: false,
+           )
+       );
        Get.back();
      } else {
         Get.snackbar("Required", "All fields are required",
@@ -287,6 +311,23 @@ class _AddTaskBarState extends State<AddTaskBar> {
         color: Colors.pink,)
         );
      }
+  }
+
+  _addTask() async {
+
+    await _taskController.addTask(
+      task :Task(
+          note: _noteController.text,
+          title: _titleController.text,
+          date:DateFormat.yMd().format(_selectedDate),
+          startTime: _startTime,
+          endTime: _endTime,
+          remind: _selectedRemind,
+          repeat: _selectedRepeat,
+          color: _selectedColor,
+          isCompleted: false,
+        )
+    );
   }
 }
 

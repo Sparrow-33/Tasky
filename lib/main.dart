@@ -1,4 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:first_mobile/conf/db.dart';
 import 'package:first_mobile/services/theme_service.dart';
 import 'package:first_mobile/ui/home_page.dart';
 import 'package:first_mobile/ui/theme.dart';
@@ -8,7 +10,10 @@ import 'package:get_storage/get_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DataBaseHelper.initDb();
   await GetStorage.init();
+  await Firebase.initializeApp();
+
   AwesomeNotifications().initialize(
     null,
     [
