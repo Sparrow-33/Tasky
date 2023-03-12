@@ -5,7 +5,7 @@ class Task {
   int? id;
   String? title;
   String? note;
-  bool? isCompleted;
+  bool? isCompleted = false;
   String? date;
   String? startTime;
   String? endTime;
@@ -53,6 +53,18 @@ class Task {
     data['repeat'] = this.repeat;
 
     return data;
+  }
+
+  factory Task.fromMap(Map<String, dynamic> data) {
+    return Task(
+      id: data['id'],
+      title: data['title'],
+      startTime: data['startTime'],
+      endTime: data['endTime'],
+      note: data['note'],
+      color: data['color'],
+      isCompleted: data['isCompleted'],
+    );
   }
 
 

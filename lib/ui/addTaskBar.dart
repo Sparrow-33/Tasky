@@ -164,8 +164,6 @@ class _AddTaskBarState extends State<AddTaskBar> {
                _colorChoice(),
                MyButton(label: "Create Task",
                  onTap: ()  {
-                   // await DataBaseHelper.tableDelete();
-                   // print("TASK CREATE");
                    _validateDate();
 
                  },
@@ -288,20 +286,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
   }
   _validateDate() async {
      if(_titleController.text.isNotEmpty) {
-     //   DB process
-     //   _taskController.addTask(
-     //       task :Task(
-     //         note: _noteController.text,
-     //         title: _titleController.text,
-     //         date:DateFormat.yMd().format(_selectedDate),
-     //         startTime: _startTime,
-     //         endTime: _endTime,
-     //         remind: _selectedRemind,
-     //         repeat: _selectedRepeat,
-     //         color: _selectedColor,
-     //         isCompleted: false,
-     //       )
-     //   );
+
        final firestore = FirebaseFirestore.instance;
        await firestore.collection('task').add({
          'note': _noteController.text,
