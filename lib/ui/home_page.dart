@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
       leading: GestureDetector(
         onTap: () {
           ThemeService().switchTheme();
-          NotificationService().displayNotification();
+          NotificationService().displayNotification('MyTask', "mode toggled");
           print(Get.isDarkMode);
         },
         child: Icon(

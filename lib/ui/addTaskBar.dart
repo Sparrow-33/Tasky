@@ -14,6 +14,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 import '../conf/db.dart';
+import '../services/notification_service.dart';
 
 class AddTaskBar extends StatefulWidget {
   const AddTaskBar({Key? key}) : super(key: key);
@@ -102,7 +103,8 @@ class _AddTaskBarState extends State<AddTaskBar> {
                          Icons.access_time_rounded
                      ),
                    ),
-                 ))
+                 )
+                 )
                ],
              ),
              InputFiled(title: "Remind", hint: "$_selectedRemind minutes early",
@@ -248,7 +250,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Color",
+        Text("Priority",
           style: titleStyle,
         ),
         SizedBox(height: 8,),
@@ -270,7 +272,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
                         backgroundColor:
                         index == 0 ?Colors.blue[900]:
                         index==1?Colors.pink:
-                        Colors.yellow[700],
+                        Color(0xff0bde8c),
                         child: _selectedColor == index?Icon(Icons.done,
                           color: Colors.white,
                           size: 16,):Container(),
@@ -300,6 +302,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
          'isCompleted': false,
        });
        Get.back();
+       NotificationService().displayNotification("MyTask","Tache ajoutée");
      } else {
         Get.snackbar("Required", "All fields are required",
         snackPosition: SnackPosition.BOTTOM,
